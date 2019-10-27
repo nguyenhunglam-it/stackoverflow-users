@@ -8,17 +8,16 @@ import {
 
 import styles from "../styles/UserRow.style";
 import toggleBookmark from "../utils/toggleBookmark";
-import isBookmarked from "../utils/isBookmarked";
 
-const BOOKMARK_IMAGE = "../assets/icons/bookmark.png";
-const BOOKMARKED_IMAGE = "../assets/icons/bookmarked.png";
+const BOOKMARK_IMAGE = require("../assets/icons/bookmark.png");
+const BOOKMARKED_IMAGE = require("../assets/icons/bookmarked.png");
 
 class UserRow extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      isBookmarked: isBookmarked(this.props.user.account_id)
+      isBookmarked: this.props.isBookmarked
     }
   }
 
@@ -31,11 +30,11 @@ class UserRow extends React.Component {
 
   render() {
     const user = this.props.user;
-
-    const bookmarkIcon = this.state.isBookmarked ? require(BOOKMARKED_IMAGE) : require(BOOKMARK_IMAGE)
+    const bookmarkIcon = this.state.isBookmarked ? BOOKMARKED_IMAGE : BOOKMARK_IMAGE
 
     return (
       <View style={styles.container}>
+
         <View style={styles.userSection}>
           <Image
             style={styles.profileImage}
@@ -46,12 +45,14 @@ class UserRow extends React.Component {
             <Text style={styles.reputation}>Reputation: {user.reputation}</Text>
           </View>
         </View>
+
         <TouchableWithoutFeedback onPress={() => this._toggleBookmark(user)}>
           <Image
             style={styles.bookmarkImage}
             source={bookmarkIcon}
           />
         </TouchableWithoutFeedback>
+
       </View >
     )
   }

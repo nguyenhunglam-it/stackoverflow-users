@@ -33,7 +33,7 @@ export default StyleSheet.create({
   bookmarkImage: {
     height: 50,
     width: 50,
-    marginRight: 5
+    marginRight: 15
   }
 
 });

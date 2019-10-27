@@ -1,4 +1,4 @@
-import { TOGGLE_BOOKMARK } from '../actions/types';
+import { INITIALIZE_BOOKMARK, TOGGLE_BOOKMARK } from "../actions/types";
 
 const initialState = {};
 /*
@@ -12,9 +12,13 @@ const initialState = {};
 */
 export default function (state = initialState, action) {
   switch (action.type) {
-
+    case INITIALIZE_BOOKMARK:
+      return {
+        ...state,
+        ...action.payload
+      }
     case TOGGLE_BOOKMARK:
-      user = action.user;
+      user = action.payload;
       if (!state[user.account_id]) {
         return {
           ...state,
