@@ -7,7 +7,7 @@ export default StyleSheet.create({
     justifyContent: "flex-end",
     height: 30,
     alignItems: "center",
-    borderBottomWidth: 1
+    borderBottomWidth: 1,
   },
 
   headerSmallText: {

@@ -35,6 +35,14 @@ class UserListView extends React.Component {
     });
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      this.state.isBookmarkedOnly != nextState.isBookmarkedOnly ||
+      this.state.isLoading != nextState.isLoading ||
+      this.props.bookmarked != nextProps.bookmarked
+    )
+  }
+
   toggleBookmarkedOnly(value) {
     this.setState({
       isBookmarkedOnly: value,
@@ -52,6 +60,8 @@ class UserListView extends React.Component {
           display_name: bookmarked[id].display_name,
           profile_image: bookmarked[id].profile_image,
           reputation: bookmarked[id].reputation,
+          location: bookmarked[id].location,
+          last_access_date: bookmarked[id].last_access_date,
           account_id: id
         }
       })
@@ -62,7 +72,7 @@ class UserListView extends React.Component {
 
       <View>
         <View style={styles.header}>
-          <Text style={styles.headerSmallText}>Bookmark only</Text>
+          <Text style={styles.headerSmallText}>Bookmarked only</Text>
           <Switch
             value={this.state.isBookmarkedOnly}
             onValueChange={value => this.toggleBookmarkedOnly(value)}

@@ -3,14 +3,16 @@ import {
   Text,
   View,
   Image,
-  TouchableWithoutFeedback
+  TouchableOpacity
 } from "react-native";
+import moment from "moment";
 
 import styles from "../styles/UserRow.style";
 import toggleBookmark from "../utils/toggleBookmark";
 
 const BOOKMARK_IMAGE = require("../assets/icons/bookmark.png");
 const BOOKMARKED_IMAGE = require("../assets/icons/bookmarked.png");
+const DATE_FORMAT = "DD MMM YY";
 
 class UserRow extends React.Component {
 
@@ -31,7 +33,8 @@ class UserRow extends React.Component {
   render() {
     const user = this.props.user;
     const bookmarkIcon = this.state.isBookmarked ? BOOKMARKED_IMAGE : BOOKMARK_IMAGE
-
+    console.log(user.last_access_date)
+    const date = moment(user.last_access_date * 1000);
     return (
       <View style={styles.container}>
 
@@ -43,15 +46,17 @@ class UserRow extends React.Component {
           <View style={styles.userInfo}>
             <Text style={styles.username}>{user.display_name}</Text>
             <Text style={styles.reputation}>Reputation: {user.reputation}</Text>
+            <Text style={styles.reputation}>Location: {user.location}</Text>
+            <Text style={styles.reputation}>Last access date: {date.format(DATE_FORMAT)}</Text>
           </View>
         </View>
 
-        <TouchableWithoutFeedback onPress={() => this._toggleBookmark(user)}>
+        <TouchableOpacity onPress={() => this._toggleBookmark(user)}>
           <Image
             style={styles.bookmarkImage}
             source={bookmarkIcon}
           />
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
 
       </View >
     )

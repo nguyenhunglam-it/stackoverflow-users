@@ -25,7 +25,9 @@ export default function (state = initialState, action) {
           [user.account_id]: {
             display_name: user.display_name,
             profile_image: user.profile_image,
-            reputation: user.reputation
+            reputation: user.reputation,
+            location: user.location,
+            last_access_date: user.last_access_date
           }
         };
       }
