@@ -7,16 +7,16 @@ import {
   TouchableOpacity
 } from "react-native";
 
-import getUserList from "../utils/getUserList";
-import UserRow from "../components/UserRow";
-import getBookmarkedFromStorage from "../utils/getBookmarkedFromStorage";
 import store from "../store";
 import { INITIALIZE_BOOKMARK } from "../actions/types";
 import styles from "../styles/UserListView.style";
+import getUserList from "../utils/getUserList";
+import getBookmarkedFromStorage from "../utils/getBookmarkedFromStorage";
+import UserRow from "../components/UserRow";
 import InformationText from "../components/InformationText";
 
 const LOADING_TEXT = "Loading users...";
-const ERROR_TEXT = "Network error!";
+const ERROR_TEXT = "Network error or API does not available";
 
 class UserListView extends React.Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class UserListView extends React.Component {
 
   async fetchUser() {
     const userList = await getUserList(this.state.page);
-    if (!userList)
+    if (!userList || userList.error_id)
       this.setState({
         isLoading: false,
         isError: true
@@ -54,9 +54,17 @@ class UserListView extends React.Component {
       loadingMore: true
     }),
       () => {
-        console.log("22")
         this.fetchUser();
       }
+    );
+  }
+
+  renderFooter() {
+    if (!this.state.loadingMore) return null;
+    return (
+      <View style={styles.loadingMoreView}>
+        <Text style={styles.loadingMoreText}>Loading more...</Text>
+      </View>
     );
   }
 
@@ -105,6 +113,9 @@ class UserListView extends React.Component {
       <FlatList
         data={displayList}
         keyExtractor={(item, index) => index.toString()}
+        contentContainerStyle={{
+          paddingBottom: 100
+        }}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => this.props.navigation.navigate("History", {
             user: item,
@@ -117,6 +128,7 @@ class UserListView extends React.Component {
         onEndReached={() => this.loadMore()}
         onEndReachedThreshold={0.5}
         initialNumToRender={10}
+        ListFooterComponent={() => this.renderFooter()}
       />
 
     )

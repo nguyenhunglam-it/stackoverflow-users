@@ -12,6 +12,15 @@ export default StyleSheet.create({
 
   headerSmallText: {
     fontSize: 20
+  },
+
+  loadingMoreView: {
+    alignItems: "center",
+    justifyContent: "center"
+  },
+
+  loadingMoreText: {
+    fontSize: 20
   }
 
 });

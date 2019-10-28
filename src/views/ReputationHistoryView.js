@@ -1,14 +1,18 @@
 import React from "react";
-import { Text, View, FlatList } from "react-native";
+import { 
+  Text,
+  View,
+  FlatList
+} from "react-native";
 
-import UserRow from "../components/UserRow";
-import HistoryRow from "../components/HistoryRow";
 import styles from "../styles/ReputationHistoryView.style";
 import getReputationHistory from "../utils/getReputationHistory";
+import UserRow from "../components/UserRow";
+import HistoryRow from "../components/HistoryRow";
 import InformationText from "../components/InformationText";
 
 const LOADING_TEXT = "Loading information...";
-const ERROR_TEXT = "Network error!";
+const ERROR_TEXT = "Network error or API does not available";
 
 class ReputationHistoryView extends React.Component {
   constructor(props) {
@@ -70,7 +74,7 @@ class ReputationHistoryView extends React.Component {
             :
             this.listRender()
         }
-        
+
       </View>
 
     )

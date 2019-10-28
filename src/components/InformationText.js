@@ -1,5 +1,9 @@
+//Display information like loading, error...
 import React from "react";
-import { View, Text } from "react-native";
+import { 
+  View,
+  Text
+} from "react-native";
 import styles from "../styles/InformationText.style";
 
 export default class InformationText extends React.Component {

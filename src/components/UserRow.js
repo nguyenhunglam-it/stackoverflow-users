@@ -1,3 +1,4 @@
+//Display each user from the list
 import React from "react";
 import {
   Text,
