@@ -20,8 +20,8 @@ export default StyleSheet.create({
   },
 
   profileImage: {
-    height: 75,
-    width: 75
+    height: 90,
+    width: 90
   },
 
   username: {

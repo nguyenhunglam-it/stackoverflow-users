@@ -33,7 +33,6 @@ class UserRow extends React.Component {
   render() {
     const user = this.props.user;
     const bookmarkIcon = this.state.isBookmarked ? BOOKMARKED_IMAGE : BOOKMARK_IMAGE
-    console.log(user.last_access_date)
     const date = moment(user.last_access_date * 1000);
     return (
       <View style={styles.container}>

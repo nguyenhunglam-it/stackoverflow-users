@@ -3,7 +3,8 @@ import {
   View,
   FlatList,
   Switch,
-  Text
+  Text,
+  TouchableOpacity
 } from "react-native";
 import { connect } from "react-redux";
 
@@ -12,10 +13,9 @@ import UserRow from "../components/UserRow";
 import getBookmarkedFromStorage from "../utils/getBookmarkedFromStorage";
 import store from "../store";
 import { INITIALIZE_BOOKMARK } from "../actions/types";
-import styles from "../styles/UserListView.style"
+import styles from "../styles/UserListView.style";
 
 class UserListView extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -39,7 +39,7 @@ class UserListView extends React.Component {
     return (
       this.state.isBookmarkedOnly != nextState.isBookmarkedOnly ||
       this.state.isLoading != nextState.isLoading ||
-      this.props.bookmarked != nextProps.bookmarked
+      JSON.stringify(this.props.bookmarked) != JSON.stringify(nextProps.bookmarked)
     )
   }
 
@@ -50,6 +50,7 @@ class UserListView extends React.Component {
   }
 
   render() {
+    console.log("render")
     if (this.state.isLoading) return (<View></View>);
 
     let displayList = []
@@ -71,6 +72,7 @@ class UserListView extends React.Component {
     return (
 
       <View>
+
         <View style={styles.header}>
           <Text style={styles.headerSmallText}>Bookmarked only</Text>
           <Switch
@@ -78,11 +80,19 @@ class UserListView extends React.Component {
             onValueChange={value => this.toggleBookmarkedOnly(value)}
           />
         </View>
+
         <FlatList
           data={displayList}
           keyExtractor={item => item.account_id.toString()}
           renderItem={({ item }) => (
-            <UserRow user={item} isBookmarked={this.props.bookmarked[item.account_id]} />
+            <TouchableOpacity onPress={() => this.props.navigation.navigate("History", {
+              user: item,
+              isBookmarked: this.props.bookmarked[item.account_id]
+            })
+            }
+            >
+              <UserRow user={item} isBookmarked={this.props.bookmarked[item.account_id]} />
+            </TouchableOpacity>
           )}
         />
       </View>
