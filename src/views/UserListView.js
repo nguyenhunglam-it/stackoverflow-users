@@ -50,7 +50,6 @@ class UserListView extends React.Component {
   }
 
   render() {
-    console.log("render")
     if (this.state.isLoading) return (<View></View>);
 
     let displayList = []
@@ -68,7 +67,7 @@ class UserListView extends React.Component {
       })
     }
     else displayList = this.state.fullList
-
+    const bookmarked = Object.assign({}, this.props.bookmarked)
     return (
 
       <View>
@@ -84,14 +83,14 @@ class UserListView extends React.Component {
         <FlatList
           data={displayList}
           keyExtractor={item => item.account_id.toString()}
+          extraData={bookmarked}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => this.props.navigation.navigate("History", {
               user: item,
-              isBookmarked: this.props.bookmarked[item.account_id]
             })
             }
             >
-              <UserRow user={item} isBookmarked={this.props.bookmarked[item.account_id]} />
+              <UserRow user={item} />
             </TouchableOpacity>
           )}
         />

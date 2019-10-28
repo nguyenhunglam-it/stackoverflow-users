@@ -6,6 +6,7 @@ import {
   TouchableOpacity
 } from "react-native";
 import moment from "moment";
+import { connect } from "react-redux";
 
 import styles from "../styles/UserRow.style";
 import toggleBookmark from "../utils/toggleBookmark";
@@ -19,7 +20,7 @@ class UserRow extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isBookmarked: this.props.isBookmarked
+      isBookmarked: this.props.bookmarked[this.props.user.account_id]
     }
   }
 
@@ -32,7 +33,7 @@ class UserRow extends React.Component {
 
   render() {
     const user = this.props.user;
-    const bookmarkIcon = this.state.isBookmarked ? BOOKMARKED_IMAGE : BOOKMARK_IMAGE
+    const bookmarkIcon = this.props.bookmarked[user.account_id] ? BOOKMARKED_IMAGE : BOOKMARK_IMAGE
     const date = moment(user.last_access_date * 1000);
     return (
       <View style={styles.container}>
@@ -62,4 +63,10 @@ class UserRow extends React.Component {
   }
 }
 
-export default UserRow;
+const mapStateToProps = (state) => {
+  return {
+    bookmarked: state.bookmarked
+  }
+}
+
+export default connect(mapStateToProps)(UserRow);
