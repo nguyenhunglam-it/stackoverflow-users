@@ -6,7 +6,6 @@ import {
   Text,
   TouchableOpacity
 } from "react-native";
-import { connect } from "react-redux";
 
 import getUserList from "../utils/getUserList";
 import UserRow from "../components/UserRow";
@@ -23,16 +22,16 @@ class UserListView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      page: 1,
       fullList: [],
       isBookmarkedOnly: false,
-      isLoading: true
+      isLoading: true,
+      loadingMore: false
     }
   }
 
-  async componentDidMount() {
-    const bookmarked = await getBookmarkedFromStorage();
-    store.dispatch({ type: INITIALIZE_BOOKMARK, payload: bookmarked });
-    const userList = await getUserList(1);
+  async fetchUser() {
+    const userList = await getUserList(this.state.page);
     if (!userList)
       this.setState({
         isLoading: false,
@@ -40,18 +39,39 @@ class UserListView extends React.Component {
       })
     else {
       const fullList = userList.items;
-      this.setState({
-        fullList,
+      this.setState((prevState) => ({
+        fullList: [...prevState.fullList, ...fullList],
         isLoading: false
+      }), () => {
+        console.log(this.state.fullList.length)
       });
     }
+  }
+
+  loadMore() {
+    this.setState((prevState) => ({
+      page: prevState.page + 1,
+      loadingMore: true
+    }),
+      () => {
+        console.log("22")
+        this.fetchUser();
+      }
+    );
+  }
+
+  async componentDidMount() {
+    const bookmarked = await getBookmarkedFromStorage();
+    store.dispatch({ type: INITIALIZE_BOOKMARK, payload: bookmarked });
+    this.fetchUser()
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     return (
       this.state.isBookmarkedOnly != nextState.isBookmarkedOnly ||
       this.state.isLoading != nextState.isLoading ||
-      JSON.stringify(this.props.bookmarked) != JSON.stringify(nextProps.bookmarked)
+      this.state.loadingMore != nextState.loadingMore ||
+      this.state.fullList.length != nextState.fullList.length
     )
   }
 
@@ -65,7 +85,7 @@ class UserListView extends React.Component {
 
     let displayList = []
     if (this.state.isBookmarkedOnly) {
-      const bookmarked = this.props.bookmarked;
+      const bookmarked = store.getState().bookmarked;
       displayList = Object.keys(bookmarked).map((id) => {
         return {
           display_name: bookmarked[id].display_name,
@@ -78,14 +98,13 @@ class UserListView extends React.Component {
       })
     }
     else displayList = this.state.fullList
+    console.log(displayList.length)
 
-    const bookmarked = Object.assign({}, this.props.bookmarked)
     return (
 
       <FlatList
         data={displayList}
-        keyExtractor={item => item.account_id.toString()}
-        extraData={bookmarked}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => this.props.navigation.navigate("History", {
             user: item,
@@ -95,12 +114,16 @@ class UserListView extends React.Component {
             <UserRow user={item} />
           </TouchableOpacity>
         )}
+        onEndReached={() => this.loadMore()}
+        onEndReachedThreshold={0.5}
+        initialNumToRender={10}
       />
 
     )
   }
 
   render() {
+    console.log("render")
     return (
       <View>
 
@@ -126,10 +149,4 @@ class UserListView extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    bookmarked: state.bookmarked
-  }
-}
-
-export default connect(mapStateToProps)(UserListView);
+export default UserListView;

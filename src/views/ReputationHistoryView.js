@@ -70,6 +70,7 @@ class ReputationHistoryView extends React.Component {
             :
             this.listRender()
         }
+        
       </View>
 
     )
