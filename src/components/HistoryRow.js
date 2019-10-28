@@ -1,4 +1,4 @@
-//Display each records of reputation for a user
+//Display each record of reputation for a user
 import React from "react";
 import {
   Text,
