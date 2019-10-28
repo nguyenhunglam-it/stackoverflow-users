@@ -14,6 +14,10 @@ import getBookmarkedFromStorage from "../utils/getBookmarkedFromStorage";
 import store from "../store";
 import { INITIALIZE_BOOKMARK } from "../actions/types";
 import styles from "../styles/UserListView.style";
+import InformationText from "../components/InformationText";
+
+const LOADING_TEXT = "Loading users...";
+const ERROR_TEXT = "Network error!";
 
 class UserListView extends React.Component {
   constructor(props) {
@@ -28,11 +32,19 @@ class UserListView extends React.Component {
   async componentDidMount() {
     const bookmarked = await getBookmarkedFromStorage();
     store.dispatch({ type: INITIALIZE_BOOKMARK, payload: bookmarked });
-    const fullList = getUserList().items;
-    this.setState({
-      fullList,
-      isLoading: false
-    });
+    const userList = await getUserList(1);
+    if (!userList)
+      this.setState({
+        isLoading: false,
+        isError: true
+      })
+    else {
+      const fullList = userList.items;
+      this.setState({
+        fullList,
+        isLoading: false
+      });
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -49,8 +61,7 @@ class UserListView extends React.Component {
     })
   }
 
-  render() {
-    if (this.state.isLoading) return (<View></View>);
+  renderList() {
 
     let displayList = []
     if (this.state.isBookmarkedOnly) {
@@ -67,9 +78,30 @@ class UserListView extends React.Component {
       })
     }
     else displayList = this.state.fullList
+
     const bookmarked = Object.assign({}, this.props.bookmarked)
     return (
 
+      <FlatList
+        data={displayList}
+        keyExtractor={item => item.account_id.toString()}
+        extraData={bookmarked}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => this.props.navigation.navigate("History", {
+            user: item,
+          })
+          }
+          >
+            <UserRow user={item} />
+          </TouchableOpacity>
+        )}
+      />
+
+    )
+  }
+
+  render() {
+    return (
       <View>
 
         <View style={styles.header}>
@@ -79,23 +111,17 @@ class UserListView extends React.Component {
             onValueChange={value => this.toggleBookmarkedOnly(value)}
           />
         </View>
+        {
+          this.state.isLoading ?
+            <InformationText text={LOADING_TEXT} />
+            :
+            this.state.isError ?
+              <InformationText text={ERROR_TEXT} />
+              :
+              this.renderList()
+        }
 
-        <FlatList
-          data={displayList}
-          keyExtractor={item => item.account_id.toString()}
-          extraData={bookmarked}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => this.props.navigation.navigate("History", {
-              user: item,
-            })
-            }
-            >
-              <UserRow user={item} />
-            </TouchableOpacity>
-          )}
-        />
       </View>
-
     )
   }
 }

@@ -5,6 +5,10 @@ import UserRow from "../components/UserRow";
 import HistoryRow from "../components/HistoryRow";
 import styles from "../styles/ReputationHistoryView.style";
 import getReputationHistory from "../utils/getReputationHistory";
+import InformationText from "../components/InformationText";
+
+const LOADING_TEXT = "Loading information...";
+const ERROR_TEXT = "Network error!";
 
 class ReputationHistoryView extends React.Component {
   constructor(props) {
@@ -28,22 +32,6 @@ class ReputationHistoryView extends React.Component {
         isLoading: false,
         isError: true
       })
-  }
-
-  loadingRender() {
-    return (
-      <View style={styles.loadingContainer}>
-        <Text style={styles.centerText}>Loading information...</Text>
-      </View>
-    )
-  }
-
-  errorRender() {
-    return (
-      <View style={styles.loadingContainer}>
-        <Text style={styles.centerText}>Network error!</Text>
-      </View>
-    )
   }
 
   listRender() {
@@ -75,10 +63,10 @@ class ReputationHistoryView extends React.Component {
           <UserRow user={this.user} isBookmarked={isBookmarked} />
         </View>
         {this.state.isLoading ?
-          this.loadingRender()
+          <InformationText text={LOADING_TEXT} />
           :
           this.state.isError ?
-            this.errorRender()
+            <InformationText text={ERROR_TEXT} />
             :
             this.listRender()
         }
