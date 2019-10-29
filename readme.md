@@ -8,6 +8,10 @@ Users can be bookmarked/de-bookmarked.
 
 Click a user to view detailed reputation history.
 
+## Builds
+
+[sof_1.0.apk](https://raw.githubusercontent.com/nguyenhunglam-it/stackoverflow-users/master/builds/sof_1.0.apk)
+
 ## Development
 
 * [Install React Native](https://facebook.github.io/react-native/docs/getting-started)
@@ -19,10 +23,6 @@ Click a user to view detailed reputation history.
 ## Screenshots
 
 <img src="https://raw.githubusercontent.com/nguyenhunglam-it/stackoverflow-users/master/screenshots/UserListView.png" width="270" height="480"> <img src="https://raw.githubusercontent.com/nguyenhunglam-it/stackoverflow-users/master/screenshots/BookmarkOnly.png" width="270" height="480"> <img src="https://github.com/nguyenhunglam-it/stackoverflow-users/blob/master/screenshots/HistoryView.png" width="270" height="480">
-
-## Builds
-
-[sof_1.0.apk](https://raw.githubusercontent.com/nguyenhunglam-it/stackoverflow-users/master/builds/sof_1.0.apk)
 
 ## TODO
 
