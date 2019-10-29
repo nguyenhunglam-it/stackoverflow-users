@@ -60,7 +60,7 @@ class UserListView extends React.Component {
   }
 
   renderFooter() {
-    if (!this.state.loadingMore) return null;
+    if (!this.state.loadingMore || this.state.isBookmarkedOnly) return null;
     return (
       <View style={styles.loadingMoreView}>
         <Text style={styles.loadingMoreText}>Loading more...</Text>
@@ -107,7 +107,6 @@ class UserListView extends React.Component {
       })
     }
     else displayList = this.state.fullList
-    console.log(displayList.length)
 
     return (
 
@@ -136,7 +135,6 @@ class UserListView extends React.Component {
   }
 
   render() {
-    console.log("render")
     return (
       <View>
 

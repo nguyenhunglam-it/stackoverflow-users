@@ -14,6 +14,7 @@ Click a user to view detailed reputation history.
 * Clone this repository
 * Install dependencies with `yarn install` or `npm install`
 * [Running guide](https://facebook.github.io/react-native/docs/running-on-device)
+* [Building guide](https://facebook.github.io/react-native/docs/signed-apk-android)
 
 ## Screenshots
 
