@@ -26,6 +26,5 @@ Click a user to view detailed reputation history.
 
 ## TODO
 
-* Implement infinite scroll on history view.
 * Replace information texts with animations.
 * Add Retry button when error occurs.
