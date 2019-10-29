@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity
 } from "react-native";
+import { connect } from "react-redux";
 
 import store from "../store";
 import { INITIALIZE_BOOKMARK } from "../actions/types";
@@ -42,13 +43,12 @@ class UserListView extends React.Component {
       this.setState((prevState) => ({
         fullList: [...prevState.fullList, ...fullList],
         isLoading: false
-      }), () => {
-        console.log(this.state.fullList.length)
-      });
+      }));
     }
   }
 
   loadMore() {
+    if (this.state.isBookmarkedOnly) return
     this.setState((prevState) => ({
       page: prevState.page + 1,
       loadingMore: true
@@ -79,7 +79,8 @@ class UserListView extends React.Component {
       this.state.isBookmarkedOnly != nextState.isBookmarkedOnly ||
       this.state.isLoading != nextState.isLoading ||
       this.state.loadingMore != nextState.loadingMore ||
-      this.state.fullList.length != nextState.fullList.length
+      this.state.fullList.length != nextState.fullList.length ||
+      this.props.bookmarked != nextProps.bookmarked
     )
   }
 
@@ -161,4 +162,10 @@ class UserListView extends React.Component {
   }
 }
 
-export default UserListView;
+const mapStateToProps = (state) => {
+  return {
+    bookmarked: state.bookmarked
+  }
+}
+
+export default connect(mapStateToProps)(UserListView);

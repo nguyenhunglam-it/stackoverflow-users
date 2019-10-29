@@ -17,6 +17,15 @@ export default StyleSheet.create({
 
   centerText: {
     fontSize: 20
+  },
+
+  loadingMoreView: {
+    alignItems: "center",
+    justifyContent: "center"
+  },
+
+  loadingMoreText: {
+    fontSize: 20
   }
 
 });
